@@ -1,35 +1,45 @@
-import { revalidatePath } from "next/cache";
-import supabase from "./utils/supabase";
+import Link from 'next/link';
 
 export default async function Home() {
-
-	const { data: characters, error } = await supabase
-	.from('characters')
-	.select("id, name, license")
-
-	const handleSumbit = async (formData: FormData) => {
-		'use server'
-		const {name, license} = Object.fromEntries(formData.entries())
-
-		await supabase.from('characters').insert({name, license})
-
-		revalidatePath('/');
-	}
-
   return (
-    <>
-      <h1 className="text-3xl">Characters</h1>
-      {characters?.map((character) => (
-		<div key={character.id}>
-			<p>{character.name}</p>
-			<p>{character.license}</p>
-		</div>
-	  ))}
-	  <form action={handleSumbit}>
-		<input type="text" name="name" placeholder="Name" />
-		<input type="text" name="license" placeholder="License" />
-		<button type="submit">Submit</button>
-	  </form>
-    </>
+    <main className="p-5">
+      <h1 className="text-4xl font-bold mb-4">Server Action Examples:</h1>
+      <ul className="flex gap-4 flex-wrap">
+        <li>
+          <Link className="text-blue-500 hover:text-blue-800" href="/supabase">
+            Supabase
+          </Link>
+        </li>
+        <li>
+          <Link className="text-blue-500 hover:text-blue-800" href="/formPost">
+            Form Post
+          </Link>
+        </li>
+        <li>
+          <Link
+            className="text-blue-500 hover:text-blue-800"
+            href="/formPostWithStatus"
+          >
+            Form Post with Status
+          </Link>
+        </li>
+        <li>
+          <Link
+            className="text-blue-500 hover:text-blue-800"
+            href="/formPostWithTransition"
+          >
+            Form Post with Transition
+          </Link>
+        </li>
+        <li>
+          <Link
+            className="text-blue-500 hover:text-blue-800"
+            href="/pokemonSearch"
+          >
+            Pokemon Search
+          </Link>
+        </li>
+      </ul>
+    </main>
   );
 }
